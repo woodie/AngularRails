@@ -1,38 +1,37 @@
 'use strict';
 
-function ContactShowCtrl($scope, $routeParams, $http) {
+function ContactShowCtrl($scope, $routeParams, $http, flashNotice) {
   var id = $routeParams.contactId;
   $http.get('/contacts/' + id + '.json').success(function(data) {
     $scope.contact = data;
   });
+  $scope.notice = flashNotice.fetch();
 }
 
-function ContactNewCtrl($scope, $routeParams, $http, $location) {
-  $scope.notice = "";
+function ContactNewCtrl($scope, $routeParams, $http, $location, flashNotice) {
   $scope.contact = {};
   $scope.submit = function() {
     $http.post('/contacts.json', $scope.contact)
     .success(function(data, status) {
       $scope.contact = data;
-      $scope.notice = "Contact was successfully created.";
+      flashNotice.set('Contact was successfully created.');
       $location.path('/contacts/' + $scope.contact.id);
     })
     .error(function(data, status) {
-      // TODO: display an error
+      // TODO: display an error`
     });
   };
 }
 
-function ContactEditCtrl($scope, $routeParams, $http, $location) {
+function ContactEditCtrl($scope, $routeParams, $http, $location, flashNotice) {
   var id = $routeParams.contactId;
-  $scope.notice = "";
   $http.get('/contacts/' + id + '.json').success(function(data) {
     $scope.contact = data;
   });
   $scope.submit = function() {
     $http.put('/contacts/' + $scope.contact.id + '.json', $scope.contact)
     .success(function(data, status) {
-      $scope.notice = "Contact was successfully undated.";
+      flashNotice.set('Contact was successfully undated.');
       $location.path('/contacts/' + $scope.contact.id);
     })
     .error(function(data, status) {
@@ -42,19 +41,18 @@ function ContactEditCtrl($scope, $routeParams, $http, $location) {
 }
 
 function ContactListCtrl($scope, $http) {
-  $scope.notice = "";
   $http.get('/contacts.json').success(function(data) {
     $scope.contacts = data;
   });
   $scope.confirm_delete = function(contact, message) {
-    var cx = confirm(message);
-    if (cx == true) {
+    if (confirm(message) == true) {
       $http.delete('/contacts/' + contact.id + '.json', $scope.contact)
       .success(function(data, status) {
         var index = $scope.contacts.indexOf(contact);
         $scope.contacts.splice(index, 1);
       })
       .error(function(data, status) {
+        // TODO: display an error
       });
     }
   };

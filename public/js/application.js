@@ -1,5 +1,19 @@
 var app = angular.module('application', []);
 
+app.factory('flashNotice', function($rootScope) {
+  return {
+    message: null,
+    set: function(msg) {
+      this.message = msg;
+    },
+    fetch: function() {
+      out = this.message;
+      this.message = null;
+      return out;
+    }
+  };
+});
+
 function capitalise(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
