@@ -18,7 +18,7 @@ function ContactNewCtrl($scope, $routeParams, $http, $location, flashNotice) {
       $location.path('/contacts/' + $scope.contact.id);
     })
     .error(function(data, status) {
-      // TODO: display an error`
+      $scope.contact_errors = full_messages(data);
     });
   };
 }
@@ -35,7 +35,7 @@ function ContactEditCtrl($scope, $routeParams, $http, $location, flashNotice) {
       $location.path('/contacts/' + $scope.contact.id);
     })
     .error(function(data, status) {
-      // TODO: display an error
+      $scope.contact_errors = full_messages(data);
     });
   };
 }
@@ -52,7 +52,7 @@ function ContactListCtrl($scope, $http) {
         $scope.contacts.splice(index, 1);
       })
       .error(function(data, status) {
-        // TODO: display an error
+        $scope.contact_errors = data;
       });
     }
   };
