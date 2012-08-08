@@ -18,7 +18,7 @@ function ContactNewCtrl($scope, $routeParams, $http, $location, flashNotice) {
       $location.path('/contacts/' + $scope.contact.id);
     })
     .error(function(data, status) {
-      $scope.contact_errors = full_messages(data);
+      $scope.errors = full_messages(data);
     });
   };
 }
@@ -35,7 +35,7 @@ function ContactEditCtrl($scope, $routeParams, $http, $location, flashNotice) {
       $location.path('/contacts/' + $scope.contact.id);
     })
     .error(function(data, status) {
-      $scope.contact_errors = full_messages(data);
+      $scope.errors = full_messages(data);
     });
   };
 }

@@ -15,13 +15,28 @@ app.factory('flashNotice', function($rootScope) {
 });
 
 function full_messages(data) {
+  var ui_class = {};
   var messages = [];
   for (var key in data) {
+    ui_class[key] = 'field_with_errors';
     for (var i in data[key]) {
       messages.push(capitalise(key) + " " + data[key][i]);
     }
   }
-  return { full_messages: messages, count: messages.length };
+  return { full_messages: messages, ui_class: ui_class };
+}
+
+function iGRR_full_messages(data) {
+  var out = { messages: []}
+  for (var key in data) {
+    out[key] = 'field_with_errors';
+    for (var i in data[key]) {
+      out['messages'].push(capitalise(key) + " " + data[key][i]);
+    }
+  }
+  out['count'] = out.messages.length;
+  console.log("hash %o", out);
+  return out;
 }
 
 function capitalise(string) {

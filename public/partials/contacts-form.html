@@ -1,22 +1,22 @@
 
-  <div ng-show="contact_errors">
+  <div ng-show="errors">
     <div id="error_explanation">
-      <h2><ng-pluralize count="contact_errors.count"
+      <h2><ng-pluralize count="errors.full_messages.length"
       when="{'1': '1 error', 'other': '{} errors'}">
       prohibited this contact from being saved:</h2>
       <ul>
-        <li ng-repeat="msg in contact_errors.full_messages">{{msg}}</li>
+        <li ng-repeat="msg in errors.full_messages">{{msg}}</li>
       </ul>
     </div>
   </div>
 
   <div class="field">
-    <label for="contact_name">Name</label><br />
-    <input ng-model="contact.name" size="30" />
+    <div class="{{errors.ui_class.name}}"><label for="contact_name">Name</label></div>
+    <div class="{{errors.ui_class.name}}"><input ng-model="contact.name" size="30" /></div>
   </div>
   <div class="field">
-    <label for="contact_title">Title</label><br />
-    <input ng-model="contact.title" size="30" />
+    <div class="{{errors.ui_class.title}}"><label for="contact_title">Title</label></div>
+    <div class="{{errors.ui_class.title}}"><input ng-model="contact.title" size="30" /></div>
   </div>
 
   <div class="actions">
