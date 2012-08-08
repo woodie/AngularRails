@@ -2,7 +2,7 @@
   <div ng-show="errors">
     <div id="error_explanation">
       <h2><ng-pluralize count="errors.full_messages.length"
-      when="{'1': '1 error', 'other': '{} errors'}">
+      when="{'1': '1 error', 'other': '{} errors'}"></ng-pluralize>
       prohibited this contact from being saved:</h2>
       <ul>
         <li ng-repeat="msg in errors.full_messages">{{msg}}</li>
