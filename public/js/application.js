@@ -26,25 +26,16 @@ function full_messages(data) {
   return { full_messages: messages, ui_class: ui_class };
 }
 
-function iGRR_full_messages(data) {
-  var out = { messages: []}
-  for (var key in data) {
-    out[key] = 'field_with_errors';
-    for (var i in data[key]) {
-      out['messages'].push(capitalise(key) + " " + data[key][i]);
-    }
-  }
-  out['count'] = out.messages.length;
-  console.log("hash %o", out);
-  return out;
-}
-
 function capitalise(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 function singularize(string) {
   return string.slice(0, -1); // obviously a hack
+}
+
+function path_for(type, inflector) {
+  return 'partials/' + inflector.plural + '-' + type + '.html';
 }
 
 app.provider('resourceRoute', function($routeProvider) {

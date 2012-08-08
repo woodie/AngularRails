@@ -1,5 +1,9 @@
 'use strict';
 
+var contact_inflector = { classical: 'Contact',
+                             plural: 'contacts',
+                           singular: 'contact'};
+
 function ContactShowCtrl($scope, $routeParams, $http, flashNotice) {
   var id = $routeParams.contactId;
   $http.get('/contacts/' + id + '.json').success(function(data) {
@@ -9,6 +13,7 @@ function ContactShowCtrl($scope, $routeParams, $http, flashNotice) {
 }
 
 function ContactNewCtrl($scope, $routeParams, $http, $location, flashNotice) {
+  $scope.form_path = path_for('form', contact_inflector);
   $scope.contact = {};
   $scope.submit = function() {
     $http.post('/contacts.json', $scope.contact)
@@ -24,6 +29,7 @@ function ContactNewCtrl($scope, $routeParams, $http, $location, flashNotice) {
 }
 
 function ContactEditCtrl($scope, $routeParams, $http, $location, flashNotice) {
+  $scope.form_path = path_for('form', contact_inflector);
   var id = $routeParams.contactId;
   $http.get('/contacts/' + id + '.json').success(function(data) {
     $scope.contact = data;
