@@ -1,12 +1,13 @@
 // framework
-app.factory('$railsResource', function() {
-  return function(name) {
+app.factory('$railsResource', function($http) {
+  return function(singular, plural) {
+    if (typeof plural == 'undefined' ) { plural = singular + 's'; }
     return {
-      inflector: {
-        singular: name,
-        plural: name + 's'
+      all: function() {
+        $http.get('/' + plural + '.json').success(function(data) {
+          return data;
+        });
       },
-      all: function() {},
       new: function() {},
       get: function() {},
       create: function() {},     
@@ -15,5 +16,4 @@ app.factory('$railsResource', function() {
     }
   };
 })
-
 
