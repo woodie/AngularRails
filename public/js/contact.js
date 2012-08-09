@@ -12,7 +12,7 @@ function ContactShowCtrl($scope, $routeParams, $http, flashNotice) {
   $scope.notice = flashNotice.fetch();
 }
 
-function ContactNewCtrl($scope, $routeParams, $http, $location, flashNotice) {
+function ContactNewCtrl($scope, $http, $location, flashNotice) {
   $scope.form_path = path_for('form', contact_inflector);
   $scope.contact = {};
   $scope.submit = function() {
@@ -29,7 +29,8 @@ function ContactNewCtrl($scope, $routeParams, $http, $location, flashNotice) {
 }
 
 function ContactEditCtrl($scope, $routeParams, $http, $location, flashNotice) {
-  $scope.form_path = path_for('form', contact_inflector);
+  // $scope.form_path = path_for('form', contact_inflector);
+  rails_helper($scope, contact_inflector);
   var id = $routeParams.contactId;
   $http.get('/contacts/' + id + '.json').success(function(data) {
     $scope.contact = data;

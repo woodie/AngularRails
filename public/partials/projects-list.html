@@ -1,0 +1,23 @@
+<h1>Listing projects</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+  <tr ng-repeat="project in projects">
+    <td>{{project.name}}</td>
+    <td>{{project.description}}</td>
+    <td><a href="#/projects/{{project.id}}">Show</a></td>
+    <td><a href="#/projects/{{project.id}}/edit">Edit</a></td>
+    <td><a ng-click="confirm_delete(project,'Are you sure?')">Destroy</a></td>
+  </tr>
+</table>
+
+<br />
+
+<a href="#/projects/new">New Project</a>

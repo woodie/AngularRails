@@ -3,7 +3,7 @@
     <div id="error_explanation">
       <h2><ng-pluralize count="errors.full_messages.length"
       when="{'1': '1 error', 'other': '{} errors'}"></ng-pluralize>
-      prohibited this contact from being saved:</h2>
+      prohibited this project from being saved:</h2>
       <ul>
         <li ng-repeat="msg in errors.full_messages">{{msg}}</li>
       </ul>
@@ -12,18 +12,18 @@
 
   <div class="field">
     <div class="{{errors.ui_class.name}}"><label
-           for="contact_name">Name</label></div>
+           for="project_name">Name</label></div>
     <div class="{{errors.ui_class.name}}"><input
-      ng-model="contact.name" size="30" /></div>
+      ng-model="project.name" size="30" /></div>
   </div>
   <div class="field">
-    <div class="{{errors.ui_class.title}}"><label
-           for="contact_title">Title</label></div>
-    <div class="{{errors.ui_class.title}}"><input
-      ng-model="contact.title" size="30" /></div>
+    <div class="{{errors.ui_class.description}}"><label
+           for="project_description">Description</label></div>
+    <div class="{{errors.ui_class.description}}"><input
+      ng-model="project.description" size="30" /></div>
   </div>
 
   <div class="actions">
-    <input ng-click="submit()" type="submit" value="Update Contact" />
+    <input ng-click="submit()" type="submit" value="Update Project" />
   </div>
 

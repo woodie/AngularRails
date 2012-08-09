@@ -1,22 +1,27 @@
 'use strict';
 
-app.factory('projects', function($railsResource) {
+app.factory('Project', function($railsResource) {
   return $railsResource('project');
 });
 
-function ProjectListCtrl($scope, projects) {
-  $scope.projects = projects.all();
+function ProjectListCtrl($scope, Project) {
+  $scope.projects = Project.all();
 }
 
-function ProjectNewCtrl($scope, projects) {
-  $scope.project = projects.new();
+function ProjectShowCtrl($scope, Project, $routeParams) {
+  $scope.project = Project.get($routeParams.projectId);
 }
 
-function ProjectShowCtrl($scope, projects, $routeParams) {
-  $scope.project = projects.get($routeParams.projectId);
+function ProjectNewCtrl($scope, Project) {
+  $scope.project = Project.nil();
+  $scope.submit = Project.create($scope.project);
+  //                      ^^^^^^
 }
 
-function ProjectEditCtrl($scope, projects, $routeParams) {
-  $scope.project = projects.get($routeParams.projectId);
+function ProjectEditCtrl($scope, Project, $routeParams) {
+  $scope.project = Project.get($routeParams.projectId);
+  $scope.submit = Project.update($scope.project);
+  //                      ^^^^^^
 }
 
+// $scope.projects.then(function(d) { console.log('then: %o', d)});

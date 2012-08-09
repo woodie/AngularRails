@@ -14,6 +14,10 @@ app.factory('flashNotice', function($rootScope) {
   };
 });
 
+function rails_helper(scope, inflector) {
+  scope.form_path = path_for('form', inflector);
+}
+
 function full_messages(data) {
   var ui_class = {};
   var messages = [];
@@ -70,7 +74,9 @@ app.provider('resourceRoute', function($routeProvider) {
 });
 
 app.config(['resourceRouteProvider', function(resourceRoute) {
-  resourceRoute.when('contacts')
-  .otherwise({redirectTo: '/contacts'});
+//  resourceRoute.when('contacts')
+  resourceRoute.when('projects')
+  .otherwise({redirectTo: '/projects'});
+//  .otherwise({redirectTo: '/contacts'});
 }]);
 
