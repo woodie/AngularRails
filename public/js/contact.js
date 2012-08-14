@@ -4,6 +4,24 @@ var contact_inflector = { classical: 'Contact',
                              plural: 'contacts',
                            singular: 'contact'};
 
+function ContactListCtrl($scope, $http) {
+  $http.get('/contacts.json').success(function(data) {
+    $scope.contacts = data;
+  });
+  $scope.confirm_delete = function(contact, message) {
+    if (confirm(message) == true) {
+      $http.delete('/contacts/' + contact.id + '.json')
+      .success(function(data, status) {
+        var index = $scope.contacts.indexOf(contact);
+        $scope.contacts.splice(index, 1);
+      })
+      .error(function(data, status) {
+        $scope.contact_errors = data;
+      });
+    }
+  };
+}
+
 function ContactShowCtrl($scope, $routeParams, $http, flashNotice) {
   var id = $routeParams.contactId;
   $http.get('/contacts/' + id + '.json').success(function(data) {
@@ -44,24 +62,6 @@ function ContactEditCtrl($scope, $routeParams, $http, $location, flashNotice) {
     .error(function(data, status) {
       $scope.errors = full_messages(data);
     });
-  };
-}
-
-function ContactListCtrl($scope, $http) {
-  $http.get('/contacts.json').success(function(data) {
-    $scope.contacts = data;
-  });
-  $scope.confirm_delete = function(contact, message) {
-    if (confirm(message) == true) {
-      $http.delete('/contacts/' + contact.id + '.json', $scope.contact)
-      .success(function(data, status) {
-        var index = $scope.contacts.indexOf(contact);
-        $scope.contacts.splice(index, 1);
-      })
-      .error(function(data, status) {
-        $scope.contact_errors = data;
-      });
-    }
   };
 }
 

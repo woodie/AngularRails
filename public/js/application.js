@@ -14,6 +14,20 @@ app.factory('flashNotice', function($rootScope) {
   };
 });
 
+app.factory('flashErrors', function($rootScope) {
+  return {
+    errors: null,
+    set: function(err) {
+      this.errors = err;
+    },
+    fetch: function() {
+      out = this.errors;
+      this.errors = null;
+      return out;
+    }
+  };
+});
+
 function rails_helper(scope, inflector) {
   scope.form_path = path_for('form', inflector);
 }
@@ -74,9 +88,7 @@ app.provider('resourceRoute', function($routeProvider) {
 });
 
 app.config(['resourceRouteProvider', function(resourceRoute) {
-//  resourceRoute.when('contacts')
-  resourceRoute.when('projects')
-  .otherwise({redirectTo: '/projects'});
-//  .otherwise({redirectTo: '/contacts'});
+//  resourceRoute.when('contacts').otherwise({redirectTo: '/contacts'});
+  resourceRoute.when('projects').otherwise({redirectTo: '/projects'});
 }]);
 

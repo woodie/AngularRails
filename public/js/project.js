@@ -6,22 +6,33 @@ app.factory('Project', function($railsResource) {
 
 function ProjectListCtrl($scope, Project) {
   $scope.projects = Project.all();
+  $scope.confirm_delete = function(contact, message) {
+    if (confirm(message) == true) {
+      // do something
+    }
+  };
 }
 
-function ProjectShowCtrl($scope, Project, $routeParams) {
+function ProjectShowCtrl($scope, Project, flashNotice, $routeParams) {
   $scope.project = Project.get($routeParams.projectId);
+  $scope.notice = flashNotice.fetch();
 }
 
-function ProjectNewCtrl($scope, Project) {
+function ProjectNewCtrl($scope, flashErrors, Project) {
   $scope.project = Project.nil();
-  $scope.submit = Project.create($scope.project);
-  //                      ^^^^^^
+  $scope.errors = null;
+  $scope.submit = function() {
+    Project.create($scope.project);
+    $scope.errors = flashErrors.fetch();
+  };
 }
 
-function ProjectEditCtrl($scope, Project, $routeParams) {
+function ProjectEditCtrl($scope, flashErrors, Project, $routeParams) {
   $scope.project = Project.get($routeParams.projectId);
-  $scope.submit = Project.update($scope.project);
-  //                      ^^^^^^
+  $scope.errors = null;
+  $scope.submit = function() {
+    $scope.project.id = $routeParams.projectId; // need to stop using promise
+    Project.update($scope.project);
+    $scope.errors = flashErrors.fetch();
+  };
 }
-
-// $scope.projects.then(function(d) { console.log('then: %o', d)});
