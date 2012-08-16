@@ -5,10 +5,15 @@ app.factory('Project', function($railsResource) {
 });
 
 function ProjectListCtrl($scope, Project) {
-  $scope.projects = Project.all();
+  Project.all().then(function(klass) {
+    $scope.projects = klass;
+  });
   $scope.confirm_delete = function(contact, message) {
     if (confirm(message) == true) {
-      // do something
+      console.log("list %o", $scope.projects);
+      $scope.projects.destroy(contact, function(msg) {
+        $scope.list_errors = msg;
+      });
     }
   };
 }
@@ -18,21 +23,21 @@ function ProjectShowCtrl($scope, Project, flashNotice, $routeParams) {
   $scope.notice = flashNotice.fetch();
 }
 
-function ProjectNewCtrl($scope, flashErrors, Project) {
-  $scope.project = Project.nil();
+function ProjectNewCtrl($scope, Project) {
   $scope.errors = null;
+  $scope.project = Project.nil();
   $scope.submit = function() {
-    Project.create($scope.project);
-    $scope.errors = flashErrors.fetch();
+    Project.create($scope.project, function(msg) { $scope.errors = msg; });
   };
 }
 
-function ProjectEditCtrl($scope, flashErrors, Project, $routeParams) {
-  $scope.project = Project.get($routeParams.projectId);
+function ProjectEditCtrl($scope, Project, $routeParams) {
   $scope.errors = null;
+  Project.get($routeParams.projectId).then(function(klass) {
+    $scope.project = klass;
+  });
   $scope.submit = function() {
-    $scope.project.id = $routeParams.projectId; // need to stop using promise
-    Project.update($scope.project);
-    $scope.errors = flashErrors.fetch();
+    Project.update($scope.project, function(msg) { $scope.errors = msg; });
   };
 }
+
