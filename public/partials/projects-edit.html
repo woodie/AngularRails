@@ -1,6 +1,6 @@
 <h1>Editing project</h1>
 
-<form ng-include="project.path('form')"></form>
+<form ng-init="action='Update'" ng-include="project.path('form')"></form>
 
 <a href="#/projects/{{project.id}}">Show</a> |
 <a href="#/projects">Back</a>

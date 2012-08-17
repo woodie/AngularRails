@@ -22,8 +22,20 @@
     <div class="{{errors.ui_class.description}}"><input
       ng-model="project.description" size="30" /></div>
   </div>
+  <div class="field">
+    <div class="{{errors.ui_class.headcount}}"><label
+           for="project_headcount">Headcount</label></div>
+    <div class="{{errors.ui_class.headcount}}"><input
+      ng-model="project.headcount" type="number" /></div>
+  </div>
+  <div class="field">
+    <div class="{{errors.ui_class.owner_id}}"><label
+           for="project_owner_id">Owner</label></div>
+    <div class="{{errors.ui_class.owner_id}}"><input
+      ng-model="project.owner_id" type="number" /></div>
+  </div>
 
   <div class="actions">
-    <input ng-click="submit()" type="submit" value="Update Project" />
+    <input ng-click="submit()" type="submit" value="{{action}} Project" />
   </div>
 

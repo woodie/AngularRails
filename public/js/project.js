@@ -11,9 +11,7 @@ function ProjectListCtrl($scope, Project) {
     $scope.projects.splice(index, 1);
     if (confirm(message) == true) {
       item.destroy(function(msg) {
-        // on error, restore item that was removed
         $scope.projects.splice(index, 1, item);
-        // need to catch when item already removed
         $scope.list_errors = msg;
       });
     }

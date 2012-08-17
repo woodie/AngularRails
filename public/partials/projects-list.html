@@ -4,6 +4,8 @@
   <tr>
     <th>Name</th>
     <th>Description</th>
+    <th>Headcount</th>
+    <th>Owner</th>
     <th></th>
     <th></th>
     <th></th>
@@ -12,6 +14,8 @@
   <tr ng-repeat="project in projects">
     <td>{{project.name}}</td>
     <td>{{project.description}}</td>
+    <td>{{project.headcount}}</td>
+    <td>{{project.owner_id}}</td>
     <td><a href="#/projects/{{project.id}}">Show</a></td>
     <td><a href="#/projects/{{project.id}}/edit">Edit</a></td>
     <td><a ng-click="confirm_delete(project,'Are you sure?')">Destroy</a></td>
