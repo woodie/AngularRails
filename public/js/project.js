@@ -5,13 +5,15 @@ app.factory('Project', function($railsResource) {
 });
 
 function ProjectListCtrl($scope, Project) {
-  Project.all().then(function(klass) {
-    $scope.projects = klass;
-  });
-  $scope.confirm_delete = function(contact, message) {
+  Project.all().then(function(klass) { $scope.projects = klass; });
+  $scope.confirm_delete = function(item, message) {
+    var index = $scope.projects.indexOf(item);
+    $scope.projects.splice(index, 1);
     if (confirm(message) == true) {
-      console.log("list %o", $scope.projects);
-      $scope.projects.destroy(contact, function(msg) {
+      item.destroy(function(msg) {
+        // on error, restore item that was removed
+        $scope.projects.splice(index, 1, item);
+        // need to catch when item already removed
         $scope.list_errors = msg;
       });
     }

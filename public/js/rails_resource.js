@@ -9,9 +9,10 @@ app.factory('$railsResource', function($http, flashNotice, $location) {
     };
 
     Klass.all = function() {
-      return $http.get('/' + plural + '.json')
-      .then(function(response) {
-        return new Klass(response.data);
+      return $http.get('/' + plural + '.json').then(function(response) {
+        return response.data.map(function(obj) {
+          return new Klass(obj);
+        });
       });
     };
 
@@ -59,19 +60,11 @@ app.factory('$railsResource', function($http, flashNotice, $location) {
       return 'partials/' + plural + '-' + type + '.html';
     };
 
-    Klass.prototype.destroy = function(member, erf) {
-      console.log("here");
-
-      $http.delete('/' + plural + '/' + member.id + '.json')
-      .success(function(data, status) {
-        // Object [object Window] has no method 'indexOf'
-        var index = this.indexOf(member);
-        this.splice(index, 1);
-      })
-      .error(function(data, status) {
-        erf(data);
-      });
-
+    Klass.prototype.destroy = function(erf) {
+      $http.delete('/' + plural + '/' + this.id + '.json')
+      .error(function(data, status) { erf(data); });
+      // TODO: Create convert the HTML error to JSON.
+      //       Don't return error when already deleted.
     };
 
     return Klass;
