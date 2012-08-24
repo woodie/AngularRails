@@ -56,9 +56,9 @@ function path_for(type, inflector) {
   return 'partials/' + inflector.plural + '-' + type + '.html';
 }
 
-app.provider('resourceRoute', function($routeProvider) {
-    
-  this.when = function(model) {
+
+app.config(function($routeProvider) {
+  $routeProvider.resourceWhen = function(model) {
     $routeProvider
     .when('/' + model, {
       templateUrl: 'partials/' + model + '-list.html',
@@ -76,19 +76,15 @@ app.provider('resourceRoute', function($routeProvider) {
       templateUrl: 'partials/' + model + '-show.html',
       controller: capitalise(singularize(model)) + 'ShowCtrl'
     });
-    return this;
+     console.log('returninig', this);
+    return $routeProvider;
   };
-
-  this.otherwise = function(params) {
-    $routeProvider.otherwise(params);
-    return this;
-  }
-
-  this.$get = function() {};
 });
 
-app.config(['resourceRouteProvider', function(resourceRoute) {
-//  resourceRoute.when('contacts').otherwise({redirectTo: '/contacts'});
-  resourceRoute.when('projects').otherwise({redirectTo: '/projects'});
+app.config(['$routeProvider', function($routeProvider) {
+  $routeProvider.
+    resourceWhen('contacts').
+    resourceWhen('projects').
+    otherwise({redirectTo: '/projects'});
 }]);
 

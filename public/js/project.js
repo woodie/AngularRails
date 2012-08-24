@@ -8,10 +8,10 @@ function ProjectListCtrl($scope, Project) {
   Project.all().then(function(klass) { $scope.projects = klass; });
   $scope.confirm_delete = function(item, message) {
     var index = $scope.projects.indexOf(item);
-    $scope.projects.splice(index, 1);
     if (confirm(message) == true) {
+      $scope.projects.splice(index, 1);
       item.destroy(function(msg) {
-        $scope.projects.splice(index, 1, item);
+        $scope.projects.splice(index, 0, item);
         $scope.list_errors = msg;
       });
     }
@@ -24,7 +24,6 @@ function ProjectShowCtrl($scope, Project, flashNotice, $routeParams) {
 }
 
 function ProjectNewCtrl($scope, Project) {
-  $scope.errors = null;
   $scope.project = Project.nil();
   $scope.submit = function() {
     Project.create($scope.project, function(msg) { $scope.errors = msg; });
@@ -32,7 +31,6 @@ function ProjectNewCtrl($scope, Project) {
 }
 
 function ProjectEditCtrl($scope, Project, $routeParams) {
-  $scope.errors = null;
   Project.get($routeParams.projectId).then(function(klass) {
     $scope.project = klass;
   });
