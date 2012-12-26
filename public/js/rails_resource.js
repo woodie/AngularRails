@@ -1,6 +1,27 @@
-// Resource.all
+'use strict';
 
-app.factory('$railsResource', function($http, flashNotice, $location) {
+var railsModel = angular.module('railsModel', []);
+
+railsModel.factory('railsResource', 
+    function($http, $location, flashNotice, flashError) {
+
+  var full_messages = function(data, status) {
+    console.log('status', status);
+    var ui_class = {};
+    var messages = [];
+    if (status == 422) {
+      for (var key in data) {
+        ui_class[key] = 'field_with_errors';
+        for (var i in data[key]) {
+          messages.push(capitalise(key) + " " + data[key][i]);
+        }
+      }
+      return { full_messages: messages, ui_class: ui_class };
+    } else {
+      flashError.show(data, status);
+    }
+  }
+
   return function(singular, plural) {
     if (typeof plural == 'undefined' ) { plural = singular + 's'; }
     
@@ -8,11 +29,14 @@ app.factory('$railsResource', function($http, flashNotice, $location) {
       angular.extend(this, data);
     };
 
-    Klass.all = function() {
-      return $http.get('/' + plural + '.json').then(function(response) {
+    Klass.all = function(query) {
+      return $http.get('/' + plural + '.json')
+      .then(function(response) {
         return response.data.map(function(obj) {
           return new Klass(obj);
         });
+      }, function(response) {
+        flashError.show(response.data, response.status);
       });
     };
 
@@ -20,35 +44,34 @@ app.factory('$railsResource', function($http, flashNotice, $location) {
       return $http.get('/' + plural + '/' + id + '.json')
       .then(function(response) {
         return new Klass(response.data);
+      }, function(response) {
+        flashError.show(response.data, response.status);
       });
-    };
-
-    Klass.nil = function() {
-      return new Klass();
     };
 
     Klass.create = function(obj, erf) {
       $http.post('/' + plural + '.json', obj)
       .success(function(data, status) {
-        flashNotice.set(singular + ' was successfully created.');
+        flashNotice.set(capitalise(singular) + ' was successfully created.');
         $location.path('/' + plural + '/' + data.id);
       })
       .error(function(data, status) {
-        erf(full_messages(data));
+        erf(full_messages(data, status));
       });
     };
 
     Klass.update = function(obj, erf) {
       $http.put('/' + plural + '/' + obj.id + '.json', obj)
       .success(function(data, status) {
-        flashNotice.set(singular + ' was successfully undated.');
+        flashNotice.set(capitalise(singular) + ' was successfully undated.');
         $location.path('/' + plural + '/' + obj.id);
       })
       .error(function(data, status) {
-        erf(full_messages(data));
+        erf(full_messages(data, status));
       });
     };
 
+    // can we delete this?
     Klass.destroy = function() {
     };
 
@@ -60,11 +83,17 @@ app.factory('$railsResource', function($http, flashNotice, $location) {
       return 'partials/' + plural + '-' + type + '.html';
     };
 
-    Klass.prototype.destroy = function(erf) {
+    Klass.prototype.destroy = function(restore_item) {
       $http.delete('/' + plural + '/' + this.id + '.json')
-      .error(function(data, status) { erf(data); });
-      // TODO: Create convert the HTML error to JSON.
-      //       Don't return error when already deleted.
+      .then(function(response) {
+          // possible undo-delete prompt here
+        }, function(response) {
+        if (response.status === 404) {
+          restore_item(); 
+        } else {
+          flashError.show(response.data, response.status);
+        }
+      });
     };
 
     return Klass;
