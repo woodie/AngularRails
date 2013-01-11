@@ -1,3 +1,6 @@
+// These controllers form the code template for scaffold.
+// Next, we provide parent classes and services to fo this.
+
 'use strict';
 
 var contact_inflector = { classical: 'Contact',

@@ -1,3 +1,5 @@
+// Services to help us crerate AngularJS scaffold
+
 'use strict';
 
 var railsHelper = angular.module('railsHelper', []);
@@ -37,6 +39,8 @@ railsHelper.factory('flashError', function($rootScope) {
   return flash;
 });
 
+// REMIND: we need to create services for these
+
 function rails_helper(scope, inflector) {
   scope.form_path = path_for('form', inflector);
 }
@@ -53,6 +57,7 @@ function path_for(type, inflector) {
   return 'partials/' + inflector.plural + '-' + type + '.html';
 }
 
+// REMIND: Instead of 'resourceWhen' we could use 'whenever'
 
 railsHelper.config(function($routeProvider) {
   $routeProvider.resourceWhen = function(model) {

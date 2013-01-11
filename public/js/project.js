@@ -1,3 +1,6 @@
+// We have greatly simplified the scaffold in these controllers
+// by pushing functionality info rails_resource and rails_helper 
+
 'use strict';
 
 app.factory('Project', function(railsResource) {
