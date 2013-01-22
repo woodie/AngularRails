@@ -1,5 +1,5 @@
 // These controllers form the code template for scaffold.
-// Next, we provide parent classes and services to fo this.
+// We will push some functionality into parent classes/services
 
 'use strict';
 
